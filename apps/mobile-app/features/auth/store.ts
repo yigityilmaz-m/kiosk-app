@@ -1,34 +1,18 @@
 import { create } from "zustand";
-//import { persist, createJSONStorage } from "zustand/middleware";
-//import AsyncStorage from "@react-native-async-storage/async-storage";
-
-//TODO: replace with supabase auth
+import type { Session } from "@supabase/supabase-js";
 
 type AuthStore = {
-  isStaffLoggedIn: boolean;
-
-  login: () => void;
-  logout: () => void;
+  session: Session | null;
+  isStaff: boolean;
+  setSession: (session: Session | null) => void;
+  clearSession: () => void;
 };
+//TODO: add persist
+export const useAuthStore = create<AuthStore>((set) => ({
+  session: null,
+  isStaff: false,
 
-export const useAuthStore = create<AuthStore>()(
-  //persist(
-  (set) => ({
-    isStaffLoggedIn: false,
+  setSession: (session) => set({ session, isStaff: session !== null }),
 
-    login: () => {
-      set({ isStaffLoggedIn: true });
-    },
-
-    logout: () => {
-      set({ isStaffLoggedIn: false });
-    },
-  }),
-  /* 
-  {
-      name: "auth-storage",
-      storage: createJSONStorage(() => AsyncStorage),
-    },
-  ),
-  */
-);
+  clearSession: () => set({ session: null, isStaff: false }),
+}));
