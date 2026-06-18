@@ -17,5 +17,6 @@ export function useProducts() {
   return useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
+    retry: 2,
   });
 }

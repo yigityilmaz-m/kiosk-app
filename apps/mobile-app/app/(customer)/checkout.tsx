@@ -10,9 +10,11 @@ import {
   Platform,
 } from "react-native";
 import { router } from "expo-router";
+import { toast } from "sonner-native";
+import { cn } from "@/lib/utils";
+
 import { useBasketStore } from "@/features/basket/store";
 import { useCreateOrder } from "@/features/orders/hooks/useCreateOrder";
-import { cn } from "@/lib/utils";
 
 export default function CheckoutScreen() {
   const [customerName, setCustomerName] = useState("");
@@ -39,6 +41,13 @@ export default function CheckoutScreen() {
           router.replace({
             pathname: "/(customer)/confirmation",
             params: { customerName },
+          });
+        },
+        onError: (error) => {
+          console.error("Error creating order:", error);
+          toast.error("Opps, something went wrong. Please try again!", {
+            style: { backgroundColor: "red" },
+            duration: 3000,
           });
         },
       },

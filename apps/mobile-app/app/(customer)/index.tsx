@@ -1,4 +1,11 @@
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  Button,
+  Pressable,
+} from "react-native";
 import {
   BasketSheetContext,
   useBasketSheetValue,
@@ -6,16 +13,28 @@ import {
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { BasketSheet } from "@/features/basket/components/BasketSheet";
 import { BottomBar } from "@/components/BottomBar";
-import { useProducts } from "@/features/products/hooks/useProducts";
 import type { Product } from "@/types/database";
+import { useProducts } from "@/features/products/hooks/useProducts";
+import { useEffect } from "react";
+import { toast } from "sonner-native";
 
 export default function ProductListingScreen() {
   const sheet = useBasketSheetValue();
-  const { data: products, isLoading, isError } = useProducts();
+
+  const { data: products, isLoading, isError, refetch } = useProducts();
 
   const renderItem = ({ item }: { item: Product }) => (
     <ProductCard product={item} />
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Could not load the menu", {
+        style: { backgroundColor: "red" },
+        duration: 1500,
+      });
+    }
+  }, [isError, refetch]);
 
   return (
     <View className="flex-1 bg-gray-50">
@@ -37,8 +56,15 @@ export default function ProductListingScreen() {
       {isError && (
         <View className="flex-1 items-center justify-center px-8">
           <Text className="text-gray-400 text-center">
-            Could not load products. Please try again.
+            Could not load the menu. Please try again.
           </Text>
+          <Pressable
+            className="bg-gray-900 rounded-2xl py-4 px-5 items-center mt-4"
+            onPress={() => refetch()}
+            //TODO: pop all the way back to menu instead of replace
+          >
+            <Text className="text-white font-bold text-base">Retry</Text>
+          </Pressable>
         </View>
       )}
 
