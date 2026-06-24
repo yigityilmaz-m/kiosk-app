@@ -28,6 +28,14 @@ export type OrderItem = {
   price_at_order_time: number;
 };
 
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  parent_id: string | null;
+  sort_order: number;
+};
+
 export type OrderWithItems = Order & {
   order_items: OrderItem[];
 };
