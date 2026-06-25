@@ -17,6 +17,7 @@ import { BottomBar } from "@/components/BottomBar";
 import { useProducts } from "@/features/products/hooks/useProducts";
 import { useCategories } from "@/features/products/hooks/useCategories";
 import type { Product, Category } from "@/types/database";
+import { SubCategoryCard } from "@/features/products/components/SubCategoryCard";
 
 export default function ProductListingScreen() {
   const sheet = useBasketSheetValue();
@@ -58,27 +59,15 @@ export default function ProductListingScreen() {
     <ProductCard product={item} />
   );
 
-  const renderSubCategory = ({ item }: { item: Category }) => {
-    const isSelected = selectedSub?.id === item.id;
-    return (
-      <Pressable
-        onPress={() => setSelectedSub(item)}
-        className={`flex-1 m-1.5 py-8 rounded-2xl border items-center justify-center ${
-          isSelected
-            ? "bg-amber-500 border-amber-500"
-            : "bg-white border-gray-200"
-        }`}
-      >
-        <Text
-          className={`text-base font-semibold ${
-            isSelected ? "text-white" : "text-gray-700"
-          }`}
-        >
-          {item.name}
-        </Text>
-      </Pressable>
-    );
-  };
+  const renderSubCategories = ({ item }: { item: Category }) => (
+    <Pressable
+      key={item.id}
+      className="flex-1 bg-white rounded-2xl overflow-hidden shadow-sm mx-1 mb-3"
+      onPress={() => setSelectedSub(item)}
+    >
+      <SubCategoryCard category={item} />
+    </Pressable>
+  );
 
   return (
     <BasketSheetContext.Provider value={sheet}>
@@ -122,28 +111,24 @@ export default function ProductListingScreen() {
               })}
             </ScrollView>
           </View>
-          {/* Sub category pills — always visible */}
+          {/* Sub categories*/}
           <View>
             {selectedMain && !selectedSub ? (
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerClassName="px-4 gap-2 pb-3"
-              >
-                {subCategories.map((cat) => {
-                  return (
-                    <Pressable
-                      key={cat.id}
-                      onPress={() => setSelectedSub(cat)}
-                      className={`px-5 py-2.5 rounded-full border bg-white border-gray-200`}
-                    >
-                      <Text className={`font-semibold text-sm text-gray-700`}>
-                        {cat.name}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </ScrollView>
+              <FlatList
+                data={subCategories}
+                renderItem={renderSubCategories}
+                keyExtractor={(item) => item.id}
+                numColumns={2}
+                contentContainerClassName="px-3 pt-2 pb-24"
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                  <View className="flex-1 items-center justify-center pt-16">
+                    <Text className="text-gray-400 text-sm">
+                      No items here yet.
+                    </Text>
+                  </View>
+                }
+              />
             ) : (
               <View className="flex-row px-5 py-2.5 rounded-full items-center justify-between">
                 <Pressable
@@ -176,7 +161,6 @@ export default function ProductListingScreen() {
               <Pressable
                 className="bg-gray-900 rounded-2xl py-4 px-5 items-center mt-4"
                 onPress={() => {
-                  console.log("refething");
                   refetch();
                 }}
               >

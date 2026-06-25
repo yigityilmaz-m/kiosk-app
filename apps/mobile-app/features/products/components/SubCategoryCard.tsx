@@ -1,0 +1,37 @@
+import { Category } from "@/types/database";
+import React from "react";
+import { Image, Text, View } from "react-native";
+
+type Props = { category: Category };
+
+export const SubCategoryCard = ({ category }: Props) => {
+  return (
+    <View
+      key={category.id}
+      className="flex-1 bg-white rounded-2xl overflow-hidden shadow-sm mx-1 mb-3"
+    >
+      {/* Product image */}
+      {category.image_url ? (
+        <Image
+          source={{ uri: category.image_url }}
+          className="w-full h-28"
+          resizeMode="cover"
+        />
+      ) : (
+        <View className="w-full h-28 bg-gray-100 items-center justify-center">
+          <Text className="text-3xl">☕</Text>
+        </View>
+      )}
+
+      {/* Info */}
+      <View className="p-3 gap-2">
+        <Text
+          className="text-sm font-semibold text-gray-900 leading-tight"
+          numberOfLines={2}
+        >
+          {category.name}
+        </Text>
+      </View>
+    </View>
+  );
+};

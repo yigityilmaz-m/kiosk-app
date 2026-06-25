@@ -34,6 +34,7 @@ export type Category = {
   slug: string;
   parent_id: string | null;
   sort_order: number;
+  image_url: string | null;
 };
 
 export type OrderWithItems = Order & {

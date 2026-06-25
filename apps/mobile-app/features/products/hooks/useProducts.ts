@@ -12,7 +12,6 @@ async function fetchProducts(categoryId?: string): Promise<Product[]> {
   if (categoryId) {
     query = query.eq("category_id", categoryId);
   }
-  console.log("fetching products");
   const { data, error } = await query;
   if (error) throw error;
   return data;
