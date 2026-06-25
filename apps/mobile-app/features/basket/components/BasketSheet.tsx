@@ -12,6 +12,7 @@ import Animated, {
 import { useBasketSheet } from "@/features/basket/hooks/useBasketSheet";
 import { useBasketStore } from "@/features/basket/store";
 import BasketItemCard from "./BasketItemCard";
+import { X } from "lucide-react-native";
 
 const SHEET_HEIGHT_RATIO = 0.55;
 
@@ -52,7 +53,7 @@ export function BasketSheet() {
           <View></View>
           <Text className="text-lg font-bold text-gray-900">Your Basket</Text>
           <Pressable onPress={close} hitSlop={12}>
-            <Text className="text-gray-400 text-2xl">✕</Text>
+            <X />
           </Pressable>
         </View>
 

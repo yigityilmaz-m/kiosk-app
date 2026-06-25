@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { cn } from "@/lib/utils";
 import { useBasketSheet } from "@/features/basket/hooks/useBasketSheet";
 import { useBasketStore } from "@/features/basket/store";
+import { ShoppingBasket, ReceiptText } from "lucide-react-native";
 
 export function BottomBar() {
   const { open } = useBasketSheet();
@@ -16,7 +17,7 @@ export function BottomBar() {
         className="flex-1 flex-row items-center justify-center gap-2"
         onPress={open}
       >
-        <Text className="text-lg">🛒</Text>
+        <ShoppingBasket />
         <Text className="text-sm font-bold text-gray-900 tracking-widest">
           CART
         </Text>
@@ -36,7 +37,7 @@ export function BottomBar() {
         onPress={() => router.push("/(customer)/checkout")}
         disabled={itemCount === 0}
       >
-        <Text className="text-lg">🧾</Text>
+        <ReceiptText />
         <Text className="text-sm font-bold text-white tracking-widest">
           CHECKOUT
         </Text>

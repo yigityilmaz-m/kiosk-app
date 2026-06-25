@@ -18,6 +18,7 @@ import { useProducts } from "@/features/products/hooks/useProducts";
 import { useCategories } from "@/features/products/hooks/useCategories";
 import type { Product, Category } from "@/types/database";
 import { SubCategoryCard } from "@/features/products/components/SubCategoryCard";
+import { MoveLeft } from "lucide-react-native";
 import { cn } from "@/lib/utils";
 
 export default function ProductListingScreen() {
@@ -133,17 +134,18 @@ export default function ProductListingScreen() {
             ) : (
               <View className="flex-row px-5 py-2.5 rounded-full items-center justify-between">
                 <Pressable
-                  className=" p-2.5
-                  "
+                  className="p-2.5"
                   onPress={() => setSelectedSub(null)}
                 >
-                  <Text>⬅️</Text>
+                  <MoveLeft />
                 </Pressable>
-                <Text className={`font-semibold text-l text-gray-700`}>
+                <Text
+                  className={`font-semibold text-l text-gray-700 text-center`}
+                >
                   {selectedSub?.name}
                 </Text>
                 <View className=" p-2.5 opacity-0">
-                  <Text>⬅️</Text>
+                  <MoveLeft />
                 </View>
               </View>
             )}
