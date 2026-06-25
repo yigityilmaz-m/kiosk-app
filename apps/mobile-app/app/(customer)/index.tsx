@@ -18,6 +18,7 @@ import { useProducts } from "@/features/products/hooks/useProducts";
 import { useCategories } from "@/features/products/hooks/useCategories";
 import type { Product, Category } from "@/types/database";
 import { SubCategoryCard } from "@/features/products/components/SubCategoryCard";
+import { cn } from "@/lib/utils";
 
 export default function ProductListingScreen() {
   const sheet = useBasketSheetValue();
@@ -71,7 +72,7 @@ export default function ProductListingScreen() {
 
   return (
     <BasketSheetContext.Provider value={sheet}>
-      <View className="flex-1 bg-gray-50">
+      <View className="flex-1 bg-gray-100">
         {/* Header */}
         <View className="p-4 pt-20">
           <Text className="text-2xl font-bold text-gray-900">Our Menu</Text>
@@ -79,13 +80,13 @@ export default function ProductListingScreen() {
             What would you like today?
           </Text>
         </View>
-        <View className="flex-1">
+        <View className="flex-1 flex-row bg-white rounded-t-3xl mt-2 pt-6">
           {/* Main category pills — always visible */}
-          <View>
+          <View className="min-w-20 max-w-36 bg-gray-50 rounded-t-3xl">
             <ScrollView
-              horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerClassName="px-4 gap-2 pb-3"
+              bounces={false}
+              contentContainerClassName="py-2 gap-4 "
             >
               {mainCategories.map((cat) => {
                 const isSelected = selectedMain?.id === cat.id;
@@ -93,16 +94,16 @@ export default function ProductListingScreen() {
                   <Pressable
                     key={cat.id}
                     onPress={() => handleSelectMain(cat)}
-                    className={`px-5 py-2.5 rounded-full border ${
-                      isSelected
-                        ? "bg-gray-900 border-gray-900"
-                        : "bg-white border-gray-200"
-                    }`}
+                    className={cn(
+                      `mx-2 mb-1 px-2 py-3 rounded-xl items-center justify-center shadow-sm`,
+                      isSelected ? "bg-gray-900" : "bg-white",
+                    )}
                   >
                     <Text
-                      className={`font-semibold text-sm ${
-                        isSelected ? "text-white" : "text-gray-700"
-                      }`}
+                      className={cn(
+                        `text-xs font-semibold text-center`,
+                        isSelected ? "text-white" : "text-gray-500",
+                      )}
                     >
                       {cat.name}
                     </Text>
@@ -111,8 +112,8 @@ export default function ProductListingScreen() {
               })}
             </ScrollView>
           </View>
-          {/* Sub categories*/}
-          <View>
+          <View className="flex-1">
+            {/* Sub categories*/}
             {selectedMain && !selectedSub ? (
               <FlatList
                 data={subCategories}
@@ -132,61 +133,64 @@ export default function ProductListingScreen() {
             ) : (
               <View className="flex-row px-5 py-2.5 rounded-full items-center justify-between">
                 <Pressable
-                  className=" px-4 py-4"
+                  className=" p-2.5
+                  "
                   onPress={() => setSelectedSub(null)}
                 >
                   <Text>⬅️</Text>
                 </Pressable>
-                <Text className={`font-semibold text-sm text-gray-700`}>
+                <Text className={`font-semibold text-l text-gray-700`}>
                   {selectedSub?.name}
                 </Text>
-                <View className=" px-4 py-4"></View>
+                <View className=" p-2.5 opacity-0">
+                  <Text>⬅️</Text>
+                </View>
               </View>
             )}
+
+            {/* Subcategory selected — loading */}
+            {selectedSub && isLoading && (
+              <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" color="#111827" />
+              </View>
+            )}
+
+            {/* Subcategory selected — error */}
+            {selectedSub && isError && (
+              <View className="flex-1 items-center justify-center px-8">
+                <Text className="text-gray-400 text-center">
+                  Could not load products. Please try again.
+                </Text>
+                <Pressable
+                  className="bg-gray-900 rounded-2xl py-4 px-5 items-center mt-4"
+                  onPress={() => {
+                    refetch();
+                  }}
+                >
+                  <Text className="text-white font-bold text-base">Retry</Text>
+                </Pressable>
+              </View>
+            )}
+
+            {/* Subcategory selected — product grid */}
+            {selectedSub && !isLoading && !isError && (
+              <FlatList
+                data={products}
+                renderItem={renderProduct}
+                keyExtractor={(item) => item.id}
+                numColumns={2}
+                contentContainerClassName="px-3 pt-2 pb-24"
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                  <View className="flex-1 items-center justify-center pt-16">
+                    <Text className="text-gray-400 text-sm">
+                      No items here yet.
+                    </Text>
+                  </View>
+                }
+              />
+            )}
           </View>
-
-          {/* Subcategory selected — loading */}
-          {selectedSub && isLoading && (
-            <View className="flex-1 items-center justify-center">
-              <ActivityIndicator size="large" color="#111827" />
-            </View>
-          )}
-
-          {/* Subcategory selected — error */}
-          {selectedSub && isError && (
-            <View className="flex-1 items-center justify-center px-8">
-              <Text className="text-gray-400 text-center">
-                Could not load products. Please try again.
-              </Text>
-              <Pressable
-                className="bg-gray-900 rounded-2xl py-4 px-5 items-center mt-4"
-                onPress={() => {
-                  refetch();
-                }}
-              >
-                <Text className="text-white font-bold text-base">Retry</Text>
-              </Pressable>
-            </View>
-          )}
-
-          {/* Subcategory selected — product grid */}
-          {selectedSub && !isLoading && !isError && (
-            <FlatList
-              data={products}
-              renderItem={renderProduct}
-              keyExtractor={(item) => item.id}
-              numColumns={2}
-              contentContainerClassName="px-3 pt-2 pb-24"
-              showsVerticalScrollIndicator={false}
-              ListEmptyComponent={
-                <View className="flex-1 items-center justify-center pt-16">
-                  <Text className="text-gray-400 text-sm">
-                    No items here yet.
-                  </Text>
-                </View>
-              }
-            />
-          )}
         </View>
       </View>
       <BottomBar />
