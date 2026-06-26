@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities {
+    .shadow-card {
+        --tw-shadow-color: rgba(28,20,16,0.2);
+        -rn-shadow-color: var(--tw-shadow-color);
+        @rn-move -rn-shadow-offset-width \&shadow-offset\.width;
+        -rn-shadow-offset-width: 0px;
+        @rn-move -rn-shadow-offset-height \&shadow-offset\.height;
+        -rn-shadow-offset-height: 4px;
+        -rn-shadow-radius: 4px;
+        -rn-shadow-opacity: 1px;
+    }
+}

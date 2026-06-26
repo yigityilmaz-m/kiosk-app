@@ -41,16 +41,16 @@ export function ProductCard({ product }: Props) {
   };
 
   return (
-    <View className="flex-1 bg-white rounded-2xl overflow-hidden shadow-sm mx-1 mb-3">
+    <View className="flex-1 bg-white rounded-2xl mx-1 shadow-card my-3">
       {/* Product image */}
       {product.image_url ? (
         <Image
           source={{ uri: product.image_url }}
-          className="w-full h-28"
-          resizeMode="cover"
+          className="w-full h-32"
+          resizeMode="contain"
         />
       ) : (
-        <View className="w-full h-28 bg-gray-100 items-center justify-center">
+        <View className="w-full h-28 bg-gray-100 items-center justify-center rounded-2xl">
           <Text className="text-3xl">☕</Text>
         </View>
       )}

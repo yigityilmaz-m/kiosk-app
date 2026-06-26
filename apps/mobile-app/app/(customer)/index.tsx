@@ -5,6 +5,8 @@ import {
   ActivityIndicator,
   Pressable,
   ScrollView,
+  Image,
+  Dimensions,
 } from "react-native";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -21,6 +23,10 @@ import { SubCategoryCard } from "@/features/products/components/SubCategoryCard"
 import { MoveLeft } from "lucide-react-native";
 import { cn } from "@/lib/utils";
 
+// TODO: Placeholder hero image — swap for real asset later
+const HEADER_IMAGE =
+  "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&h=400&fit=crop";
+const { height } = Dimensions.get("window");
 export default function ProductListingScreen() {
   const sheet = useBasketSheetValue();
   const { data: categories } = useCategories();
@@ -73,21 +79,37 @@ export default function ProductListingScreen() {
 
   return (
     <BasketSheetContext.Provider value={sheet}>
-      <View className="flex-1 bg-gray-100">
-        {/* Header */}
-        <View className="p-4 pt-20">
-          <Text className="text-2xl font-bold text-gray-900">Our Menu</Text>
-          <Text className="text-sm text-gray-400 mt-1">
-            What would you like today?
-          </Text>
+      <View className="flex-1 bg-[#f8fafc]">
+        <View
+          className={cn("relative overflow-hidden")}
+          style={{ height: height * 0.3 }}
+        >
+          <Image
+            source={{ uri: HEADER_IMAGE }}
+            className="absolute inset-0 w-full h-full"
+            resizeMode="cover"
+          />
+          <View className="absolute inset-0 bg-black/50" />
+
+          {/* Hero content */}
+          <View className="absolute bottom-0 left-0 right-0 px-5 pb-10">
+            <Text className="text-white text-3xl font-black tracking-tight leading-tight">
+              DO YOU HAVE ANY{"\n"}ORDER TODAY?
+            </Text>
+            <Text className="text-white/70 text-xs font-medium tracking-widest mt-1 uppercase">
+              Freshly made for you today.
+            </Text>
+          </View>
         </View>
-        <View className="flex-1 flex-row bg-white rounded-t-3xl mt-2 pt-6">
-          {/* Main category pills — always visible */}
-          <View className="min-w-20 max-w-36 bg-gray-50 rounded-t-3xl">
+
+        {/* ── Main content card ── */}
+        <View className="flex-1 flex-row bg-white rounded-t-3xl -mt-8 pt-4">
+          {/* ── Sidebar: main categories ── */}
+          <View className="w-[76px] bg-gray-50 rounded-t-3xl">
             <ScrollView
-              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
               bounces={false}
-              contentContainerClassName="py-2 gap-4 "
+              contentContainerStyle={{ paddingVertical: 8, gap: 6 }}
             >
               {mainCategories.map((cat) => {
                 const isSelected = selectedMain?.id === cat.id;
@@ -95,16 +117,36 @@ export default function ProductListingScreen() {
                   <Pressable
                     key={cat.id}
                     onPress={() => handleSelectMain(cat)}
-                    className={cn(
-                      `mx-2 mb-1 px-2 py-3 rounded-xl items-center justify-center shadow-sm`,
-                      isSelected ? "bg-gray-900" : "bg-white",
-                    )}
+                    className="mx-2 items-center"
                   >
+                    <View
+                      className={cn(
+                        "w-14 h-14 rounded-2xl overflow-hidden",
+                        isSelected
+                          ? "border-2 border-amber-500"
+                          : "border-2 border-transparent",
+                      )}
+                    >
+                      <Image
+                        source={{
+                          uri: cat.image_url
+                            ? cat.image_url
+                            : `https://placehold.co/112x112/E8D5B7/C4A882?text=${encodeURIComponent(cat.name.charAt(0))}`,
+                        }}
+                        className="w-full h-full"
+                        resizeMode="cover"
+                      />
+                      {/* Dark overlay when selected */}
+                      {isSelected && (
+                        <View className="absolute inset-0 bg-amber-500/20" />
+                      )}
+                    </View>
                     <Text
                       className={cn(
-                        `text-xs font-semibold text-center`,
-                        isSelected ? "text-white" : "text-gray-500",
+                        "text-[9px] font-semibold text-center mt-1.5 leading-tight",
+                        isSelected ? "text-amber-600" : "text-gray-400",
                       )}
+                      numberOfLines={2}
                     >
                       {cat.name}
                     </Text>
@@ -113,15 +155,21 @@ export default function ProductListingScreen() {
               })}
             </ScrollView>
           </View>
+
+          {/* ── Right content area ── */}
           <View className="flex-1">
-            {/* Sub categories*/}
+            {/* Sub categories grid */}
             {selectedMain && !selectedSub ? (
               <FlatList
                 data={subCategories}
                 renderItem={renderSubCategories}
                 keyExtractor={(item) => item.id}
                 numColumns={2}
-                contentContainerClassName="px-3 pt-2 pb-24"
+                contentContainerStyle={{
+                  paddingHorizontal: 8,
+                  paddingTop: 8,
+                  paddingBottom: 96,
+                }}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={
                   <View className="flex-1 items-center justify-center pt-16">
@@ -132,56 +180,53 @@ export default function ProductListingScreen() {
                 }
               />
             ) : (
-              <View className="flex-row px-5 py-2.5 rounded-full items-center justify-between">
-                <Pressable
-                  className="p-2.5"
-                  onPress={() => setSelectedSub(null)}
-                >
-                  <MoveLeft />
+              /* Back bar when subcategory selected */
+              <View className="flex-row px-3 py-2.5 items-center justify-between">
+                <Pressable className="p-2" onPress={() => setSelectedSub(null)}>
+                  <MoveLeft size={20} color="#374151" strokeWidth={2} />
                 </Pressable>
-                <Text
-                  className={`font-semibold text-l text-gray-700 text-center`}
-                >
+                <Text className="font-bold text-sm text-gray-800 text-center flex-1">
                   {selectedSub?.name}
                 </Text>
-                <View className=" p-2.5 opacity-0">
-                  <MoveLeft />
+                {/* Invisible spacer for optical centering */}
+                <View className="p-2 opacity-0">
+                  <MoveLeft size={20} color="#374151" strokeWidth={2} />
                 </View>
               </View>
             )}
 
-            {/* Subcategory selected — loading */}
+            {/* Loading */}
             {selectedSub && isLoading && (
               <View className="flex-1 items-center justify-center">
-                <ActivityIndicator size="large" color="#111827" />
+                <ActivityIndicator size="large" color="#D97706" />
               </View>
             )}
 
-            {/* Subcategory selected — error */}
+            {/* Error */}
             {selectedSub && isError && (
               <View className="flex-1 items-center justify-center px-8">
-                <Text className="text-gray-400 text-center">
+                <Text className="text-gray-400 text-center text-sm">
                   Could not load products. Please try again.
                 </Text>
                 <Pressable
-                  className="bg-gray-900 rounded-2xl py-4 px-5 items-center mt-4"
-                  onPress={() => {
-                    refetch();
-                  }}
+                  className="bg-gray-900 rounded-2xl py-3 px-6 items-center mt-4"
+                  onPress={() => refetch()}
                 >
-                  <Text className="text-white font-bold text-base">Retry</Text>
+                  <Text className="text-white font-bold text-sm">Retry</Text>
                 </Pressable>
               </View>
             )}
 
-            {/* Subcategory selected — product grid */}
+            {/* Product grid */}
             {selectedSub && !isLoading && !isError && (
               <FlatList
                 data={products}
                 renderItem={renderProduct}
                 keyExtractor={(item) => item.id}
                 numColumns={2}
-                contentContainerClassName="px-3 pt-2 pb-24"
+                contentContainerStyle={{
+                  paddingHorizontal: 8,
+                }}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={
                   <View className="flex-1 items-center justify-center pt-16">
@@ -195,6 +240,7 @@ export default function ProductListingScreen() {
           </View>
         </View>
       </View>
+
       <BottomBar />
       <BasketSheet />
     </BasketSheetContext.Provider>
