@@ -41,7 +41,10 @@ export function ProductCard({ product }: Props) {
   };
 
   return (
-    <View className="flex-1 bg-white rounded-2xl mx-1 shadow-card my-3">
+    <View
+      className="flex-1 bg-white rounded-2xl mx-1 shadow-card my-3"
+      style={{ elevation: 3 }}
+    >
       {/* Product image */}
       {product.image_url ? (
         <Image

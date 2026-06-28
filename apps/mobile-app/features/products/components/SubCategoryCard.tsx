@@ -9,6 +9,7 @@ export const SubCategoryCard = ({ category }: Props) => {
     <View
       key={category.id}
       className="flex-1 bg-white rounded-2xl shadow-card mx-1 mb-3"
+      style={{ elevation: 3 }}
     >
       {/* Product image */}
       {category.image_url ? (
