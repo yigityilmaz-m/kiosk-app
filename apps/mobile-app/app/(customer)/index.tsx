@@ -22,6 +22,7 @@ import type { Product, Category } from "@/types/database";
 import { SubCategoryCard } from "@/features/products/components/SubCategoryCard";
 import { MoveLeft } from "lucide-react-native";
 import { cn } from "@/lib/utils";
+import { router } from "expo-router";
 
 // TODO: Placeholder hero image — swap for real asset later
 const HEADER_IMAGE =
@@ -64,7 +65,10 @@ export default function ProductListingScreen() {
   }, [categories, selectedMain]);
 
   const renderProduct = ({ item }: { item: Product }) => (
-    <ProductCard product={item} />
+    <ProductCard
+      product={item}
+      onPress={() => router.push(`/(customer)/product/${item.id}`)}
+    />
   );
 
   const renderSubCategories = ({ item }: { item: Category }) => (

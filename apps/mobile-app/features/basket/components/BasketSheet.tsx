@@ -89,7 +89,7 @@ export function BasketSheet() {
               showsVerticalScrollIndicator={false}
             >
               {items.map((item) => (
-                <BasketItemCard item={item} key={item.product.id} />
+                <BasketItemCard item={item} key={item.basketItemId} />
               ))}
             </ScrollView>
 

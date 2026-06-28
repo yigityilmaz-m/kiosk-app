@@ -4,11 +4,12 @@ export type Product = {
   id: string;
   name: string;
   price: number;
-  category: string;
+  large_price: number | null;
   image_url: string | null;
   description: string | null;
   available: boolean;
   created_at: string;
+  category_id: string;
 };
 
 export type Order = {

@@ -11,6 +11,12 @@ export default function CustomerLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen
+        name="product/[id]"
+        options={{
+          presentation: "modal",
+        }}
+      />
+      <Stack.Screen
         name="checkout"
         options={{
           presentation: "card",

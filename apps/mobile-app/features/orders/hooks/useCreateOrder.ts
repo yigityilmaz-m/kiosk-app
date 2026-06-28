@@ -12,9 +12,8 @@ async function createOrder(
   input: CreateOrderInput,
   items: BasketItem[],
 ): Promise<void> {
-  const total = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+  const total = items.reduce((sum, i) => sum + i.resolvedPrice * i.quantity, 0);
 
-  // Insert order
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .insert({
@@ -28,12 +27,11 @@ async function createOrder(
 
   if (orderError) throw orderError;
 
-  // Insert order items
   const orderItems = items.map((i) => ({
     order_id: order.id,
     product_id: i.product.id,
     quantity: i.quantity,
-    price_at_order_time: i.product.price,
+    price_at_order_time: i.resolvedPrice,
   }));
 
   const { error: itemsError } = await supabase

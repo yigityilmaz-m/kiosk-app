@@ -3,14 +3,14 @@ import { Minus, Plus, X } from "lucide-react-native";
 import { useBasketStore } from "@/features/basket/store";
 import type { BasketItem } from "@/features/basket/store";
 
-interface Props {
+type Props = {
   item: BasketItem;
-}
+};
 
 export default function BasketItemCard({ item }: Props) {
   const { incrementItem, decrementItem } = useBasketStore();
 
-  const lineTotal = (item.product.price * item.quantity).toFixed(2);
+  const lineTotal = (item.resolvedPrice * item.quantity).toFixed(2);
 
   return (
     <View className="flex-row items-center py-3.5 border-b border-gray-100">
@@ -29,6 +29,7 @@ export default function BasketItemCard({ item }: Props) {
         )}
       </View>
 
+      {/* Name + size label */}
       <View className="flex-1 mr-3">
         <Text
           className="text-sm font-bold text-gray-900 uppercase tracking-wide"
@@ -36,11 +37,17 @@ export default function BasketItemCard({ item }: Props) {
         >
           {item.product.name}
         </Text>
+        {item.selectedSize && (
+          <Text className="text-xs text-gray-400 mt-0.5">
+            {item.selectedSize}
+          </Text>
+        )}
       </View>
 
+      {/* Qty controls */}
       <View className="flex-row items-center w-[88px] justify-between mr-3 flex-shrink-0">
         <Pressable
-          onPress={() => decrementItem(item.product.id)}
+          onPress={() => decrementItem(item.basketItemId)}
           hitSlop={8}
           className="w-7 h-7 rounded-lg border border-gray-200 items-center justify-center"
         >
@@ -56,7 +63,7 @@ export default function BasketItemCard({ item }: Props) {
         </Text>
 
         <Pressable
-          onPress={() => incrementItem(item.product.id)}
+          onPress={() => incrementItem(item.basketItemId)}
           hitSlop={8}
           className="w-7 h-7 rounded-lg bg-gray-900 items-center justify-center"
         >
@@ -64,6 +71,7 @@ export default function BasketItemCard({ item }: Props) {
         </Pressable>
       </View>
 
+      {/* Price */}
       <Text className="text-sm font-bold text-gray-900 w-14 text-right flex-shrink-0">
         ${lineTotal}
       </Text>

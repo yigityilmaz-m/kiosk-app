@@ -81,15 +81,18 @@ export default function CheckoutScreen() {
 
           {items.map((item) => (
             <View
-              key={item.product.id}
+              key={item.basketItemId}
               className="flex-row justify-between items-center"
             >
               <Text className="text-sm text-gray-600">
                 {item.product.name}
+                {item.selectedSize && (
+                  <Text className="text-gray-400"> · {item.selectedSize}</Text>
+                )}
                 <Text className="text-gray-400"> × {item.quantity}</Text>
               </Text>
               <Text className="text-sm font-semibold text-gray-900">
-                ${(item.product.price * item.quantity).toFixed(2)}
+                ${(item.resolvedPrice * item.quantity).toFixed(2)}
               </Text>
             </View>
           ))}
