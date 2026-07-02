@@ -15,7 +15,7 @@ export default function BasketItemCard({ item }: Props) {
   return (
     <View className="flex-row items-center py-3.5 border-b border-gray-100">
       {/* Product image */}
-      <View className="w-14 h-14 rounded-full overflow-hidden bg-amber-50 mr-4 flex-shrink-0">
+      <View className="w-14 h-14 rounded-full overflow-hidden bg-brand-subtle mr-4 flex-shrink-0">
         {item.product.image_url ? (
           <Image
             source={{ uri: item.product.image_url }}
@@ -31,14 +31,11 @@ export default function BasketItemCard({ item }: Props) {
 
       {/* Name + size label */}
       <View className="flex-1 mr-3">
-        <Text
-          className="text-sm font-bold text-gray-900 uppercase tracking-wide"
-          numberOfLines={1}
-        >
+        <Text className="textLabel text-brand-text" numberOfLines={1}>
           {item.product.name}
         </Text>
         {item.selectedSize && (
-          <Text className="text-xs text-gray-400 mt-0.5">
+          <Text className="textDetail text-brand-muted">
             {item.selectedSize}
           </Text>
         )}
@@ -49,7 +46,7 @@ export default function BasketItemCard({ item }: Props) {
         <Pressable
           onPress={() => decrementItem(item.basketItemId)}
           hitSlop={8}
-          className="w-7 h-7 rounded-lg border border-gray-200 items-center justify-center"
+          className="w-7 h-7 rounded-lg border-2 border-brand-border items-center justify-center"
         >
           {item.quantity === 1 ? (
             <X size={12} color="#9CA3AF" strokeWidth={2.5} />
@@ -58,21 +55,19 @@ export default function BasketItemCard({ item }: Props) {
           )}
         </Pressable>
 
-        <Text className="text-sm font-bold text-gray-900 text-center">
-          {item.quantity}
-        </Text>
+        <Text className="textBody text-center">{item.quantity}</Text>
 
         <Pressable
           onPress={() => incrementItem(item.basketItemId)}
           hitSlop={8}
           className="w-7 h-7 rounded-lg bg-gray-900 items-center justify-center"
         >
-          <Plus size={12} color="#FFFFFF" strokeWidth={2.5} />
+          <Plus size={12} color="white" strokeWidth={2.5} />
         </Pressable>
       </View>
 
       {/* Price */}
-      <Text className="text-sm font-bold text-gray-900 w-14 text-right flex-shrink-0">
+      <Text className="textBody text-right flex-shrink-0 w-14">
         ${lineTotal}
       </Text>
     </View>

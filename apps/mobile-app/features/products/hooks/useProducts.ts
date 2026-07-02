@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import type { Product } from "@/types/database";
 
@@ -18,10 +19,20 @@ async function fetchProducts(categoryId?: string): Promise<Product[]> {
 }
 
 export function useProducts(categoryId?: string) {
-  return useQuery({
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
     queryKey: ["products", categoryId],
     queryFn: () => fetchProducts(categoryId),
     enabled: !!categoryId,
     retry: 2,
   });
+
+  useEffect(() => {
+    query.data?.forEach((product) => {
+      queryClient.setQueryData(["product", product.id], product);
+    });
+  }, [query.data, queryClient]);
+
+  return query;
 }

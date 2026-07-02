@@ -127,7 +127,7 @@ export default function ProductListingScreen() {
                       className={cn(
                         "w-14 h-14 rounded-2xl overflow-hidden",
                         isSelected
-                          ? "border-2 border-amber-500"
+                          ? "border-2 border-brand"
                           : "border-2 border-transparent",
                       )}
                     >
@@ -142,13 +142,13 @@ export default function ProductListingScreen() {
                       />
                       {/* Dark overlay when selected */}
                       {isSelected && (
-                        <View className="absolute inset-0 bg-amber-500/20" />
+                        <View className="absolute inset-0 bg-brand/10" />
                       )}
                     </View>
                     <Text
                       className={cn(
-                        "text-[9px] font-semibold text-center mt-1.5 leading-tight",
-                        isSelected ? "text-amber-600" : "text-gray-400",
+                        "textLabel text-brand-text text-center mt-1.5 leading-tight",
+                        isSelected && "text-brand",
                       )}
                       numberOfLines={2}
                     >
@@ -189,7 +189,7 @@ export default function ProductListingScreen() {
                 <Pressable className="p-2" onPress={() => setSelectedSub(null)}>
                   <MoveLeft size={20} color="#374151" strokeWidth={2} />
                 </Pressable>
-                <Text className="font-bold text-sm text-gray-800 text-center flex-1">
+                <Text className="textTitle text-brand-text text-center flex-1">
                   {selectedSub?.name}
                 </Text>
                 {/* Invisible spacer for optical centering */}
@@ -202,7 +202,7 @@ export default function ProductListingScreen() {
             {/* Loading */}
             {selectedSub && isLoading && (
               <View className="flex-1 items-center justify-center">
-                <ActivityIndicator size="large" color="#D97706" />
+                <ActivityIndicator size="large" className="color-brand" />
               </View>
             )}
 

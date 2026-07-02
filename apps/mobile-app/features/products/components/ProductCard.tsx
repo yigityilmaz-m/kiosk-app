@@ -28,13 +28,10 @@ export function ProductCard({ product, onPress }: Props) {
 
       {/* Info */}
       <View className="p-3 gap-2">
-        <Text
-          className="text-sm font-semibold text-gray-900 leading-tight"
-          numberOfLines={2}
-        >
+        <Text className="textBody leading-tight" numberOfLines={2}>
           {product.name}
         </Text>
-        <Text className="text-sm font-bold text-amber-500">
+        <Text className="textBody leading-tight text-brand">
           ${product.price.toFixed(2)}
         </Text>
       </View>

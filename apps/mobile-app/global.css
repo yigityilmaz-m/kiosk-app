@@ -14,4 +14,25 @@
         -rn-shadow-radius: 4px;
         -rn-shadow-opacity: 1px;
     }
+
+    .textHeader {
+        @apply text-2xl font-black tracking-widest uppercase;
+    }
+
+    .textTitle {
+        @apply text-lg font-bold tracking-wide uppercase;
+    }
+
+    .textLabel {
+        @apply text-xs font-semibold uppercase tracking-widest;
+    }
+
+    .textBody {
+        @apply text-sm font-semibold leading-relaxed;
+    }
+
+    .textDetail {
+        @apply text-xs font-semibold leading-relaxed;
+    }
+
 }

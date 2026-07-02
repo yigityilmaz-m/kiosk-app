@@ -54,16 +54,10 @@ export function BasketSheet() {
         className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl z-20"
         style={[{ height: sheetHeight }, sheetStyle]}
       >
-        <View className="items-center pt-3 pb-1">
-          <View className="w-10 h-1 rounded-full bg-gray-200" />
-        </View>
-
         {/* Title */}
         <View className="flex-row items-center justify-between px-5 py-3 border-b border-gray-100">
           <View className="w-8" />
-          <Text className="text-base font-black tracking-widest uppercase text-gray-900">
-            Cart
-          </Text>
+          <Text className="textTitle">Cart</Text>
           <Pressable
             onPress={close}
             hitSlop={12}
@@ -93,23 +87,17 @@ export function BasketSheet() {
               ))}
             </ScrollView>
 
-            <View className="mx-5 mb-4 px-4 py-3.5 bg-gray-50 rounded-2xl flex-row justify-between items-center">
-              <Text className="text-sm font-bold uppercase tracking-widest text-gray-500">
-                Total Order
-              </Text>
-              <Text className="text-lg font-black text-gray-900">
-                ${total().toFixed(2)}
-              </Text>
+            <View className="mx-5 mb-4 px-4 py-3.5 bg-brand-bg rounded-2xl flex-row justify-between items-center">
+              <Text className="textLabel text-brand-text">Total Order</Text>
+              <Text className="textTitle">${total().toFixed(2)}</Text>
             </View>
 
             <Pressable
               onPress={handleCheckout}
-              className="mx-5 mb-6  bg-red-600 rounded-2xl py-4 flex-row items-center justify-center gap-x-2"
+              className="mx-5 mb-6 bg-brand-continue rounded-2xl py-4 flex-row items-center justify-center gap-x-2"
             >
-              <Text className="text-white font-black text-sm uppercase tracking-widest">
-                Continue to Payment
-              </Text>
-              <MoveRight color="#FFFFFF" strokeWidth={2} />
+              <Text className="textLabel text-white">Continue to Payment</Text>
+              <MoveRight color="white" strokeWidth={2} />
             </Pressable>
           </>
         )}

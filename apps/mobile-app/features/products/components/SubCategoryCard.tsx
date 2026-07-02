@@ -27,7 +27,7 @@ export const SubCategoryCard = ({ category }: Props) => {
       {/* Info */}
       <View className="p-3 gap-2">
         <Text
-          className="text-sm font-semibold text-gray-900 leading-tight text-center"
+          className="textLabel text-brand-muted leading-tight text-center"
           numberOfLines={2}
         >
           {category.name}
