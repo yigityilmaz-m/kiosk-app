@@ -12,8 +12,9 @@ import Animated, {
 import { useBasketSheet } from "@/features/basket/hooks/useBasketSheet";
 import { useBasketStore } from "@/features/basket/store";
 import BasketItemCard from "./BasketItemCard";
-import { MoveRight, X } from "lucide-react-native";
+import { X } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { ContinueButton } from "@/components/ContinueButton";
 
 const SHEET_HEIGHT_RATIO = 0.72;
 
@@ -92,13 +93,10 @@ export function BasketSheet() {
               <Text className="textTitle">${total().toFixed(2)}</Text>
             </View>
 
-            <Pressable
+            <ContinueButton
+              label="Continue to payment"
               onPress={handleCheckout}
-              className="mx-5 mb-6 bg-brand-continue rounded-2xl py-4 flex-row items-center justify-center gap-x-2"
-            >
-              <Text className="textLabel text-white">Continue to Payment</Text>
-              <MoveRight color="white" strokeWidth={2} />
-            </Pressable>
+            />
           </>
         )}
       </Animated.View>

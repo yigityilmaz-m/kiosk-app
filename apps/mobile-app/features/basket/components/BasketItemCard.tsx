@@ -5,9 +5,10 @@ import type { BasketItem } from "@/features/basket/store";
 
 type Props = {
   item: BasketItem;
+  editable?: boolean;
 };
 
-export default function BasketItemCard({ item }: Props) {
+export default function BasketItemCard({ item, editable = true }: Props) {
   const { incrementItem, decrementItem } = useBasketStore();
 
   const lineTotal = (item.resolvedPrice * item.quantity).toFixed(2);
@@ -28,43 +29,44 @@ export default function BasketItemCard({ item }: Props) {
           </View>
         )}
       </View>
-
       {/* Name + size label */}
       <View className="flex-1 mr-3">
         <Text className="textLabel text-brand-text" numberOfLines={1}>
           {item.product.name}
         </Text>
         {item.selectedSize && (
-          <Text className="textDetail text-brand-muted">
-            {item.selectedSize}
+          <Text className="text-xs text-gray-400 mt-0.5">
+            {item.selectedSize ? `${item.selectedSize} · ` : ""}
+            Qty {item.quantity}
           </Text>
         )}
       </View>
 
       {/* Qty controls */}
-      <View className="flex-row items-center w-[88px] justify-between mr-3 flex-shrink-0">
-        <Pressable
-          onPress={() => decrementItem(item.basketItemId)}
-          hitSlop={8}
-          className="w-7 h-7 rounded-lg border-2 border-brand-border items-center justify-center"
-        >
-          {item.quantity === 1 ? (
-            <X size={12} color="#9CA3AF" strokeWidth={2.5} />
-          ) : (
-            <Minus size={12} color="#9CA3AF" strokeWidth={2.5} />
-          )}
-        </Pressable>
 
-        <Text className="textBody text-center">{item.quantity}</Text>
-
-        <Pressable
-          onPress={() => incrementItem(item.basketItemId)}
-          hitSlop={8}
-          className="w-7 h-7 rounded-lg bg-gray-900 items-center justify-center"
-        >
-          <Plus size={12} color="white" strokeWidth={2.5} />
-        </Pressable>
-      </View>
+      {editable && (
+        <View className="flex-row items-center w-[88px] justify-between mr-3 flex-shrink-0">
+          <Pressable
+            onPress={() => decrementItem(item.basketItemId)}
+            hitSlop={8}
+            className="w-7 h-7 rounded-lg border-2 border-brand-border items-center justify-center"
+          >
+            {item.quantity === 1 ? (
+              <X size={12} color="#9CA3AF" strokeWidth={2.5} />
+            ) : (
+              <Minus size={12} color="#9CA3AF" strokeWidth={2.5} />
+            )}
+          </Pressable>
+          <Text className="textBody text-center">{item.quantity}</Text>
+          <Pressable
+            onPress={() => incrementItem(item.basketItemId)}
+            hitSlop={8}
+            className="w-7 h-7 rounded-lg bg-gray-900 items-center justify-center"
+          >
+            <Plus size={12} color="white" strokeWidth={2.5} />
+          </Pressable>
+        </View>
+      )}
 
       {/* Price */}
       <Text className="textBody text-right flex-shrink-0 w-14">

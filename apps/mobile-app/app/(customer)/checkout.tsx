@@ -5,16 +5,18 @@ import {
   TextInput,
   Pressable,
   ScrollView,
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
+import { MoveLeft, Asterisk } from "lucide-react-native";
 import { cn } from "@/lib/utils";
 
 import { useBasketStore } from "@/features/basket/store";
 import { useCreateOrder } from "@/features/orders/hooks/useCreateOrder";
+import { ContinueButton } from "@/components/ContinueButton";
+import BasketItemCard from "@/features/basket/components/BasketItemCard";
 
 export default function CheckoutScreen() {
   const [customerName, setCustomerName] = useState("");
@@ -45,7 +47,7 @@ export default function CheckoutScreen() {
         },
         onError: (error) => {
           console.error("Error creating order:", error);
-          toast.error("Opps, something went wrong. Please try again!", {
+          toast.error("Oops, something went wrong. Please try again!", {
             style: { backgroundColor: "red" },
             duration: 3000,
           });
@@ -60,69 +62,62 @@ export default function CheckoutScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       {/* Header */}
-      <View className="px-4 pt-14 pb-4 bg-gray-50 flex-row items-center gap-3">
+      <View className="px-6 pt-20 pb-4 bg-gray-50 flex-row justify-between items-center gap-3">
         <Pressable onPress={() => router.back()} hitSlop={12}>
-          <Text className="text-gray-400 text-base">← Back</Text>
+          <MoveLeft size={20} color="#374151" strokeWidth={2} />
         </Pressable>
-        <Text className="text-2xl font-bold text-gray-900">Checkout</Text>
+        <Text className="textTitle text-brand-text justify-self-center ">
+          Checkout
+        </Text>
+        <View className="opacity-0">
+          <MoveLeft size={20} strokeWidth={2} />
+        </View>
       </View>
 
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="px-4 pb-8 gap-5"
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* Order summary */}
-        <View className="bg-white rounded-2xl p-4 gap-3">
-          <Text className="text-base font-bold text-gray-900">
-            Order Summary
-          </Text>
+      <View className="flex-1 px-4 pb-4 gap-5">
+        {/* Order summary — internally scrollable, grows to fill available space */}
+        <View className="bg-white rounded-2xl p-4 flex-1 min-h-[140px] relative">
+          <Text className="textLabel text-brand-text mb-3">Order Summary</Text>
 
-          {items.map((item) => (
-            <View
-              key={item.basketItemId}
-              className="flex-row justify-between items-center"
-            >
-              <Text className="text-sm text-gray-600">
-                {item.product.name}
-                {item.selectedSize && (
-                  <Text className="text-gray-400"> · {item.selectedSize}</Text>
-                )}
-                <Text className="text-gray-400"> × {item.quantity}</Text>
-              </Text>
-              <Text className="text-sm font-semibold text-gray-900">
-                ${(item.resolvedPrice * item.quantity).toFixed(2)}
-              </Text>
-            </View>
-          ))}
+          <ScrollView
+            className="flex-1"
+            contentContainerClassName="gap-4"
+            showsVerticalScrollIndicator={false}
+          >
+            {items.map((item) => (
+              <BasketItemCard
+                item={item}
+                key={item.basketItemId}
+                editable={true}
+              ></BasketItemCard>
+            ))}
+          </ScrollView>
 
-          <View className="h-px bg-gray-100 mt-1" />
+          <View className="h-px bg-gray-100" />
 
-          <View className="flex-row justify-between items-center">
-            <Text className="text-base font-bold text-gray-900">Total</Text>
-            <Text className="text-lg font-bold text-gray-900">
+          <View className="flex-row justify-between items-center bg-amber-50 -mx-4 -mb-4 px-4 py-3 rounded-b-2xl">
+            <Text className="textLabel text-brand-text">Total Order</Text>
+            <Text className="textTitle text-amber-600">
               ${total.toFixed(2)}
             </Text>
           </View>
         </View>
 
-        {/* Customer details */}
+        {/* Customer details — fixed at bottom, does not scroll away */}
         <View className="bg-white rounded-2xl p-4 gap-4">
-          <Text className="text-base font-bold text-gray-900">
-            Your Details
-          </Text>
+          <Text className="textLabel text-brand-text">Your Details</Text>
 
           <View className="gap-1">
-            <Text className="text-sm font-medium text-gray-700">
-              Name <Text className="text-red-500">*</Text>
+            <Text className="textBody text-brand-text">
+              Name
+              <Asterisk size={12} color={"red"} />
             </Text>
             <TextInput
               className={cn(
-                "border rounded-xl px-4 py-3 text-sm text-gray-900",
+                "border rounded-xl p-4 text-sm text-brand-text",
                 nameError
                   ? "border-red-400 bg-red-50"
-                  : "border-gray-200 bg-gray-50",
+                  : "border-gray-200 bg-gray-50 focus:border-brand",
               )}
               placeholder="Enter your name"
               placeholderTextColor="#9ca3af"
@@ -135,50 +130,35 @@ export default function CheckoutScreen() {
               returnKeyType="next"
             />
             {nameError && (
-              <Text className="text-xs text-red-500">
+              <Text className="textBody text-red-500">
                 Please enter your name
               </Text>
             )}
           </View>
 
           <View className="gap-1">
-            <Text className="text-sm font-medium text-gray-700">
-              Note <Text className="text-gray-400 font-normal">(optional)</Text>
+            <Text className="textBody text-brand-text">
+              Note{" "}
+              <Text className="textDetail text-brand-muted">(optional)</Text>
             </Text>
             <TextInput
-              className="border border-gray-200 bg-gray-50 rounded-xl px-4 py-3 text-sm text-gray-900"
+              className="border border-gray-200 bg-gray-50 rounded-xl p-4 text-sm text-brand-text  focus:border-brand"
               placeholder="Any special requests?"
               placeholderTextColor="#9ca3af"
               value={customerNote}
               onChangeText={setCustomerNote}
-              multiline
-              numberOfLines={3}
-              textAlignVertical="top"
-              returnKeyType="done"
+              returnKeyType="next"
             />
           </View>
         </View>
-      </ScrollView>
-
-      {/* Place Order button */}
-      <View className="px-4 py-4 bg-gray-50 border-t border-gray-100">
-        <Pressable
-          className={cn(
-            "bg-gray-900 rounded-2xl py-4 items-center justify-center",
-            isPending && "opacity-60",
-          )}
-          onPress={handlePlaceOrder}
-          disabled={isPending}
-        >
-          {isPending ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text className="text-white font-bold text-base tracking-wide">
-              Place Order · ${total.toFixed(2)}
-            </Text>
-          )}
-        </Pressable>
       </View>
+
+      <ContinueButton
+        label="place order"
+        onPress={handlePlaceOrder}
+        isLoading={isPending}
+        isDisabled={isPending}
+      />
     </KeyboardAvoidingView>
   );
 }
