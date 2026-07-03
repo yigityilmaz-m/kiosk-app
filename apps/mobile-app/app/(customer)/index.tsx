@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BasketSheetContext,
   useBasketSheetValue,
@@ -27,7 +27,9 @@ import { router } from "expo-router";
 // TODO: Placeholder hero image — swap for real asset later
 const HEADER_IMAGE =
   "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&h=400&fit=crop";
+
 const { height } = Dimensions.get("window");
+
 export default function ProductListingScreen() {
   const sheet = useBasketSheetValue();
   const { data: categories } = useCategories();
@@ -57,6 +59,21 @@ export default function ProductListingScreen() {
     setSelectedSub(null);
   }
 
+  const tapCount = useRef(0);
+  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleHiddenTrigger = () => {
+    tapCount.current += 1;
+    if (tapTimer.current) clearTimeout(tapTimer.current);
+    tapTimer.current = setTimeout(() => {
+      tapCount.current = 0;
+    }, 2000);
+    if (tapCount.current >= 5) {
+      tapCount.current = 0;
+      router.push("/staff/login");
+    }
+  };
+
   useEffect(() => {
     if (categories && categories.length > 0 && !selectedMain) {
       const firstMain = categories.find((c) => c.parent_id === null);
@@ -84,9 +101,10 @@ export default function ProductListingScreen() {
   return (
     <BasketSheetContext.Provider value={sheet}>
       <View className="flex-1 bg-[#f8fafc]">
-        <View
+        <Pressable
           className={cn("relative overflow-hidden")}
           style={{ height: height * 0.3 }}
+          onPress={handleHiddenTrigger}
         >
           <Image
             source={{ uri: HEADER_IMAGE }}
@@ -104,7 +122,7 @@ export default function ProductListingScreen() {
               Freshly made for you today.
             </Text>
           </View>
-        </View>
+        </Pressable>
 
         {/* ── Main content card ── */}
         <View className="flex-1 flex-row bg-white rounded-t-3xl -mt-8 pt-4">
