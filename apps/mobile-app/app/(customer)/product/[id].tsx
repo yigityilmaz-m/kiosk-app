@@ -30,10 +30,10 @@ export default function ProductScreen() {
   );
   const { height } = Dimensions.get("window");
 
-  const imageHeightRatio = useSharedValue(0.6);
+  const imageHeightRatio = useSharedValue(0);
 
   useEffect(() => {
-    imageHeightRatio.value = withTiming(selectedSize === "Small" ? 0.45 : 0.6, {
+    imageHeightRatio.value = withTiming(selectedSize === "Large" ? 0.6 : 0.45, {
       duration: 500,
       easing: Easing.out(Easing.cubic),
     });
