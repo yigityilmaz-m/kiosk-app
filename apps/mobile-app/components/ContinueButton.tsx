@@ -7,13 +7,17 @@ type Props = {
   onPress: () => void;
   isLoading?: boolean;
   isDisabled?: boolean;
+  className?: string;
+  iconRight?: boolean;
 };
-
+//TODO: use type LucideIcon
 export const ContinueButton = ({
   label = "",
   onPress,
   isLoading = false,
   isDisabled = false,
+  className = "",
+  iconRight = true,
 }: Props) => {
   const disabled = isDisabled || isLoading;
 
@@ -23,6 +27,7 @@ export const ContinueButton = ({
       disabled={disabled}
       className={cn(
         "mx-5 mb-6 bg-brand-continue rounded-2xl py-4 flex-row items-center justify-center gap-x-2",
+        className,
         disabled && "opacity-60",
       )}
     >
@@ -31,7 +36,7 @@ export const ContinueButton = ({
       ) : (
         <>
           <Text className="textLabel text-white">{label}</Text>
-          <MoveRight color="white" strokeWidth={2} />
+          {iconRight && <MoveRight color="white" strokeWidth={2} />}
         </>
       )}
     </Pressable>

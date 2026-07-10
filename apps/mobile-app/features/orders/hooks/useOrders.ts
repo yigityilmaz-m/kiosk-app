@@ -14,7 +14,7 @@ const STATUS_MAP: Record<OrderFilter, OrderStatus[] | null> = {
 async function fetchOrders(filter: OrderFilter): Promise<OrderWithItems[]> {
   let query = supabase
     .from("orders")
-    .select("*, order_items(*)")
+    .select("*, order_items(*, products(*))")
     .order("created_at", { ascending: false });
 
   const statuses = STATUS_MAP[filter];
@@ -31,6 +31,6 @@ export function useOrders(filter: OrderFilter = "active") {
   return useQuery({
     queryKey: ["orders", filter],
     queryFn: () => fetchOrders(filter),
-    staleTime: 30 * 1000, // 30s — staff screen stays fresh without hammering Supabase
+    staleTime: 30 * 1000,
   });
 }

@@ -38,6 +38,10 @@ export type Category = {
   image_url: string | null;
 };
 
+export type OrderItemWithProduct = OrderItem & {
+  products: Product;
+};
+
 export type OrderWithItems = Order & {
-  order_items: OrderItem[];
+  order_items: OrderItemWithProduct[];
 };
