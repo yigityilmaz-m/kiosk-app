@@ -12,7 +12,7 @@ import { StaffGuard } from "@/features/auth/components/StaffGuard";
 import { useOrders, OrderFilter } from "@/features/orders/hooks/useOrders";
 import type { OrderWithItems } from "@/types/database";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { cn } from "@/lib/utils";
+import { cn, formatOrderDate } from "@/lib/utils";
 import { ContinueButton } from "@/components/ContinueButton";
 
 // ─── Filter bar ───────────────────────────────────────────────────────────────
@@ -68,7 +68,7 @@ function OrderListItem({
     <Pressable
       onPress={onPress}
       className={cn(
-        "px-2 py-1.5 m-1 rounded-md border-2 border-brand-text",
+        "p-2 m-1 rounded-md border-2 border-brand-text",
         isSelected ? "bg-brand-subtle" : "bg-white border-brand-border ",
       )}
     >
@@ -78,7 +78,12 @@ function OrderListItem({
         {order.order_items.length !== 1 && "s"} · £{order.total}
       </Text>
       <Text className="textDetail text-brand capitalize">{order.status}</Text>
-      <Text className="textDetail  text-brand-text ">{order.created_at}</Text>
+      <Text className="textDetail  text-brand-text ">
+        {formatOrderDate(order.created_at).day}
+      </Text>
+      <Text className="textDetail  text-brand-text ">
+        {formatOrderDate(order.created_at).time}
+      </Text>
     </Pressable>
   );
 }
@@ -87,55 +92,57 @@ function OrderListItem({
 
 function OrderDetail({ order }: { order: OrderWithItems }) {
   return (
-    <View className="flex-1 bg-brand-bg p-2 justify-between">
-      <>
+    <View className="flex-1 m-1 ">
+      <View className="flex-1 p-1 justify-between  rounded-md border-2 bg-white border-brand-border">
         <Text className="textLabel text-brand-text">{order.customer_name}</Text>
         <Text className="textLabel text-brand capitalize mt-1">
           {order.status}
         </Text>
         <Text className="textDetail text-brand-text">£{order.total}</Text>
         <Text className="textLabel text-brand-text  mb-2">Items</Text>
-      </>
 
-      <ScrollView className="flex-1">
-        {order.order_items.map((item) => (
-          <View
-            key={item.id}
-            className="flex-row justify-between py-2 border-b border-brand-border"
-          >
-            <Image
-              source={{
-                uri: item.products.image_url
-                  ? item.products.image_url
-                  : `https://placehold.co/112x112/E8D5B7/C4A882?text=${encodeURIComponent(item.products.name.charAt(0))}`,
-              }}
-              resizeMode="cover"
-              className="w-16 h-16 rounded-md"
-            />
-            <Text className="text-brand-text flex-1">{item.products.name}</Text>
-            <Text className="text-brand-text text-sm">x{item.quantity}</Text>
-            <Text className="text-brand-text text-sm w-14 text-right">
-              £{item.price_at_order_time}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+        <ScrollView className="flex-1">
+          {order.order_items.map((item) => (
+            <View
+              key={item.id}
+              className="flex-row justify-between py-2 border-b border-brand-border"
+            >
+              <Image
+                source={{
+                  uri: item.products.image_url
+                    ? item.products.image_url
+                    : `https://placehold.co/112x112/E8D5B7/C4A882?text=${encodeURIComponent(item.products.name.charAt(0))}`,
+                }}
+                resizeMode="cover"
+                className="w-16 h-16 rounded-md"
+              />
+              <Text className="text-brand-text flex-1">
+                {item.products.name}
+              </Text>
+              <Text className="text-brand-text text-sm">x{item.quantity}</Text>
+              <Text className="text-brand-text text-sm w-14 text-right">
+                £{item.price_at_order_time}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
 
       {
         //TODO: Change Style
       }
-      <View className="flex-row items-center">
+      <View className="flex-row items-center m-3">
         <ContinueButton
           label="Decline"
           onPress={() => {}}
           iconRight={false}
-          className="flex-1 bg-brand-muted border-2  border-brand-border"
+          className="flex-1 bg-brand-muted border-2  border-brand-border "
         ></ContinueButton>
         <ContinueButton
           label="Proceed"
           onPress={() => {}}
           iconRight={false}
-          className="flex-1"
+          className="flex-1 "
         ></ContinueButton>
       </View>
     </View>
@@ -165,7 +172,7 @@ export default function StaffDashboard() {
         {/* Two-column body */}
         <View className="flex-1 flex-row">
           {/* Left — order list */}
-          <View className="flex-[1] rounded-md border-r border-brand-bg">
+          <View className="flex-[1]">
             {isLoading && (
               <ActivityIndicator color="#F59E0B" className="mt-8" />
             )}
