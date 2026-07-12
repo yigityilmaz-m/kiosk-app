@@ -1,6 +1,5 @@
-import { SafeAreaView } from "react-native-safe-area-context";
 import { OrderFilter } from "../hooks/useOrders";
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { cn } from "@/lib/utils";
 
 const FILTERS: { label: string; value: OrderFilter }[] = [
@@ -18,7 +17,7 @@ export const FilterBar = ({
   onChange: (f: OrderFilter) => void;
 }) => {
   return (
-    <SafeAreaView className="flex-row gap-2 p-3">
+    <View className="flex-row gap-2 p-3">
       {FILTERS.map((f) => (
         <Pressable
           key={f.value}
@@ -35,6 +34,6 @@ export const FilterBar = ({
           </Text>
         </Pressable>
       ))}
-    </SafeAreaView>
+    </View>
   );
 };
