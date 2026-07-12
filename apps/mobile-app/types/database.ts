@@ -27,6 +27,7 @@ export type OrderItem = {
   product_id: string;
   quantity: number;
   price_at_order_time: number;
+  selected_size: "Small" | "Large" | null;
 };
 
 export type Category = {

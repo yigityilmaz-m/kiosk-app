@@ -32,6 +32,7 @@ async function createOrder(
     product_id: i.product.id,
     quantity: i.quantity,
     price_at_order_time: i.resolvedPrice,
+    selected_size: i.selectedSize,
   }));
 
   const { error: itemsError } = await supabase
