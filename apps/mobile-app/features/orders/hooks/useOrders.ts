@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import type { OrderStatus, OrderWithItems } from "@/types/database";
+import { useEffect } from "react";
 
 export type OrderFilter = "all" | "active" | "completed" | "cancelled";
 
@@ -28,6 +29,25 @@ async function fetchOrders(filter: OrderFilter): Promise<OrderWithItems[]> {
 }
 
 export function useOrders(filter: OrderFilter = "active") {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("orders-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "orders" },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   return useQuery({
     queryKey: ["orders", filter],
     queryFn: () => fetchOrders(filter),

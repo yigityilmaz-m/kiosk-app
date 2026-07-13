@@ -3,8 +3,8 @@ import { Pressable, Text, View } from "react-native";
 import { cn } from "@/lib/utils";
 
 const FILTERS: { label: string; value: OrderFilter }[] = [
-  { label: "Active", value: "active" },
   { label: "All", value: "all" },
+  { label: "Active", value: "active" },
   { label: "Completed", value: "completed" },
   { label: "Cancelled", value: "cancelled" },
 ];
