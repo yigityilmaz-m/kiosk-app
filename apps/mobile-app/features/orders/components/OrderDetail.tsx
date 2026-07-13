@@ -9,7 +9,7 @@ import { STATUS_COLOR } from "@/lib/constants";
 
 const nextStatus: Record<string, { label: string; value: OrderStatus }> = {
   pending: { label: "Prepare", value: "preparing" },
-  preparing: { label: "Complere", value: "completed" },
+  preparing: { label: "Complete", value: "completed" },
 };
 
 export const OrderDetail = ({ order }: { order: OrderWithItems }) => {

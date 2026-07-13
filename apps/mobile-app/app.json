@@ -8,6 +8,10 @@
     "scheme": "mobileapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#1C1410",
+      "resizeMode": "contain"
+    },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
