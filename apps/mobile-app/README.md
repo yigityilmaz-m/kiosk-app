@@ -1,16 +1,22 @@
+# KioskApp
+
+A self-service kiosk POS system built with React Native + Expo + Supabase.
+
+> The mobile app lives in `apps/mobile-app/`
+
 # KioskApp — Self-Service System
 
 ![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)<br>
 ![NativeWind](https://img.shields.io/badge/NativeWind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
 ![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=zustand&logoColor=white)
 ![Reanimated](https://img.shields.io/badge/Reanimated_3-6C47FF?style=for-the-badge&logo=react&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-A full-stack self-service kiosk built with React Native and Expo, designed as a portfolio project to demonstrate production-level mobile development patterns during a career break.
+A full-stack self-service kiosk built with React Native and Expo, designed as a portfolio project to demonstrate production-level mobile development patterns.
 
 The app has two sides sharing a single codebase: a customer-facing self-order kiosk and a staff-facing order management dashboard hidden behind authentication. Orders sync in real-time between both sides.
 
@@ -21,8 +27,12 @@ The app has two sides sharing a single codebase: a customer-facing self-order ki
 **Customer side**
 The customer browses a categorised product menu, builds a basket, enters their name, and places an order. Products are organised in a two-level hierarchy (e.g. Hot Drinks → Hot Coffee) with size variants (Small / Large) where applicable. The order confirmation screen counts down and returns to the menu automatically.
 
+https://github.com/user-attachments/assets/efdcf141-5cdb-4160-8e7e-b145b05cef03
+
 **Staff side**
 Staff access a hidden login trigger on the kiosk screen (five rapid taps in the top-right corner). After authenticating, they land on a dashboard showing live order cards with full item detail. Each order progresses through a status pipeline — Pending → Preparing → Completed — with a cancel option at any stage. Two additional tabs cover product catalogue management and resource/inventory planning.
+
+https://github.com/user-attachments/assets/09b5524f-7bbe-4154-a519-4feb93e590d0
 
 ---
 
