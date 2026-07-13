@@ -9,7 +9,7 @@ export default function StaffLayout() {
         headerStyle: { backgroundColor: BRAND_COLOR.bg },
       }}
     >
-      <Stack.Screen name="login" />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen
         name="(tabs)"
         options={{
