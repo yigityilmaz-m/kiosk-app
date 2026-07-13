@@ -1,3 +1,9 @@
+# KioskApp
+
+A self-service kiosk POS system built with React Native + Expo.
+
+> The mobile app lives in `apps/mobile-app/`
+
 # KioskApp — Self-Service System
 
 ![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
