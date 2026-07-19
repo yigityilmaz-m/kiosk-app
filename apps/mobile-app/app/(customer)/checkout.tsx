@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   View,
   Text,
@@ -10,8 +9,11 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { toast } from "sonner-native";
-import { MoveLeft, Asterisk } from "lucide-react-native";
+import { MoveLeft } from "lucide-react-native";
 import { cn } from "@/lib/utils";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { checkoutSchema, CheckoutFormData } from "@/features/auth/schema";
 
 import { useBasketStore } from "@/features/basket/store";
 import { useCreateOrder } from "@/features/orders/hooks/useCreateOrder";
@@ -19,32 +21,32 @@ import { ContinueButton } from "@/components/ContinueButton";
 import BasketItemCard from "@/features/basket/components/BasketItemCard";
 
 export default function CheckoutScreen() {
-  const [customerName, setCustomerName] = useState("");
-  const [customerNote, setCustomerNote] = useState("");
-  const [nameError, setNameError] = useState(false);
-
   const items = useBasketStore((s) => s.items);
   const total = useBasketStore((s) => s.total());
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: { customerName: "", customerNote: "" },
+  });
+
   const { mutate: createOrder, isPending } = useCreateOrder();
 
-  const handlePlaceOrder = () => {
-    if (!customerName.trim()) {
-      setNameError(true);
-      return;
-    }
-
-    setNameError(false);
-
+  const onSubmit = (data: CheckoutFormData) => {
     createOrder(
-      { customerName, customerNote },
       {
-        onSuccess: () => {
+        customerName: data.customerName,
+        customerNote: data.customerNote,
+      },
+      {
+        onSuccess: () =>
           router.replace({
             pathname: "/(customer)/confirmation",
-            params: { customerName },
-          });
-        },
+            params: { customerName: data.customerName },
+          }),
         onError: (error) => {
           console.error("Error creating order:", error);
           toast.error("Oops, something went wrong. Please try again!", {
@@ -108,54 +110,68 @@ export default function CheckoutScreen() {
           <Text className="textLabel text-brand-text">Your Details</Text>
 
           <View className="gap-1">
-            <Text className="textBody text-brand-text">
-              Name
-              <Asterisk size={12} color={"red"} />
-            </Text>
-            <TextInput
-              className={cn(
-                "border rounded-xl p-4 text-sm text-brand-text",
-                nameError
-                  ? "border-red-400 bg-red-50"
-                  : "border-gray-200 bg-gray-50 focus:border-brand",
+            <Text className="textBody text-brand-text">Name</Text>
+            <Controller
+              control={control}
+              name="customerName"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="How should we call you?"
+                  placeholderTextColor="#9ca3af"
+                  className={cn(
+                    "border rounded-xl px-4 py-3 border-brand-border",
+                    errors.customerName
+                      ? "border-red-400"
+                      : " focus:border-brand",
+                  )}
+                  returnKeyType="done"
+                />
               )}
-              placeholder="Enter your name"
-              placeholderTextColor="#9ca3af"
-              value={customerName}
-              onChangeText={(v) => {
-                setCustomerName(v);
-                if (nameError) setNameError(false);
-              }}
-              autoCapitalize="words"
-              returnKeyType="next"
             />
-            {nameError && (
-              <Text className="textBody text-red-500">
-                Please enter your name
+            {errors.customerName && (
+              <Text className="text-red-500 text-xs mt-1">
+                {errors.customerName.message}
               </Text>
             )}
           </View>
 
           <View className="gap-1">
             <Text className="textBody text-brand-text">
-              Note{" "}
-              <Text className="textDetail text-brand-muted">(optional)</Text>
+              Note <Text className=" text-brand-muted">(optional)</Text>
             </Text>
-            <TextInput
-              className="border border-gray-200 bg-gray-50 rounded-xl p-4 text-sm text-brand-text  focus:border-brand"
-              placeholder="Any special requests?"
-              placeholderTextColor="#9ca3af"
-              value={customerNote}
-              onChangeText={setCustomerNote}
-              returnKeyType="next"
+            <Controller
+              control={control}
+              name="customerNote"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="Any special requests?"
+                  placeholderTextColor="#9ca3af"
+                  className={cn(
+                    "border rounded-xl px-4 py-3 border-brand-border",
+                    errors.customerNote
+                      ? "border-red-400"
+                      : " focus:border-brand",
+                  )}
+                  returnKeyType="done"
+                />
+              )}
             />
+            {errors.customerNote && (
+              <Text className="text-red-500 text-xs mt-1">
+                {errors.customerNote.message}
+              </Text>
+            )}
           </View>
         </View>
       </View>
 
       <ContinueButton
         label="place order"
-        onPress={handlePlaceOrder}
+        onPress={handleSubmit(onSubmit)}
         isLoading={isPending}
         isDisabled={isPending}
       />
