@@ -5,7 +5,7 @@ import { useAuthStore } from "../store";
 
 type Props = { children: React.ReactNode };
 
-export function StaffGuard({ children }: Props) {
+export const StaffGuard = ({ children }: Props) => {
   const isStaff = useAuthStore((s) => s.isStaff);
 
   useEffect(() => {
@@ -23,4 +23,4 @@ export function StaffGuard({ children }: Props) {
   }
 
   return <>{children}</>;
-}
+};

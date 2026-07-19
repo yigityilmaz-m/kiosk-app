@@ -5,7 +5,7 @@ import { useBasketSheet } from "@/features/basket/hooks/useBasketSheet";
 import { useBasketStore } from "@/features/basket/store";
 import { ShoppingBasket, ReceiptText } from "lucide-react-native";
 
-export function BottomBar() {
+export const BottomBar = () => {
   const { open } = useBasketSheet();
   const itemCount = useBasketStore((s) => s.itemCount());
   const total = useBasketStore((s) => s.total());
@@ -43,4 +43,4 @@ export function BottomBar() {
       </Pressable>
     </View>
   );
-}
+};

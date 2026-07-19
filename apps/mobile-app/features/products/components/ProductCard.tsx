@@ -6,7 +6,7 @@ type Props = {
   onPress: () => void;
 };
 
-export function ProductCard({ product, onPress }: Props) {
+export const ProductCard = ({ product, onPress }: Props) => {
   return (
     <Pressable
       className="flex-1 bg-white rounded-2xl mx-1 shadow-card my-3"
@@ -37,4 +37,4 @@ export function ProductCard({ product, onPress }: Props) {
       </View>
     </Pressable>
   );
-}
+};

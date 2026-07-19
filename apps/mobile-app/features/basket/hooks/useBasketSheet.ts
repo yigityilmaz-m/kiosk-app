@@ -17,15 +17,15 @@ export const BasketSheetContext = createContext<BasketSheetContextType | null>(
   null,
 );
 
-export function useBasketSheet() {
+export const useBasketSheet = () => {
   const ctx = useContext(BasketSheetContext);
   if (!ctx) {
     throw new Error("useBasketSheet must be used inside BasketSheetProvider");
   }
   return ctx;
-}
+};
 
-export function useBasketSheetValue() {
+export const useBasketSheetValue = () => {
   const translateY = useSharedValue<number>(1); // 1 = closed, 0 = open
 
   const open = () => {
@@ -37,4 +37,4 @@ export function useBasketSheetValue() {
   };
 
   return { translateY, open, close };
-}
+};

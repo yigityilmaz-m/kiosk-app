@@ -28,7 +28,7 @@ async function fetchOrders(filter: OrderFilter): Promise<OrderWithItems[]> {
   return data as OrderWithItems[];
 }
 
-export function useOrders(filter: OrderFilter = "active") {
+export const useOrders = (filter: OrderFilter = "active") => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -53,4 +53,4 @@ export function useOrders(filter: OrderFilter = "active") {
     queryFn: () => fetchOrders(filter),
     staleTime: 30 * 1000,
   });
-}
+};

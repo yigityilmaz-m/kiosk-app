@@ -10,9 +10,9 @@ async function fetchCategories(): Promise<Category[]> {
   return data;
 }
 
-export function useCategories() {
+export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });
-}
+};

@@ -18,7 +18,7 @@ async function fetchProducts(categoryId?: string): Promise<Product[]> {
   return data;
 }
 
-export function useProducts(categoryId?: string) {
+export const useProducts = (categoryId?: string) => {
   const queryClient = useQueryClient();
 
   const query = useQuery({
@@ -35,4 +35,4 @@ export function useProducts(categoryId?: string) {
   }, [query.data, queryClient]);
 
   return query;
-}
+};

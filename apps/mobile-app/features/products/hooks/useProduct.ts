@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import type { Product } from "@/types/database";
 
-export function useProduct(id: string) {
+export const useProduct = (id: string) => {
   return useQuery<Product>({
     queryKey: ["product", id],
     queryFn: async () => {
@@ -16,4 +16,4 @@ export function useProduct(id: string) {
     },
     enabled: !!id,
   });
-}
+};

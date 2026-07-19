@@ -45,11 +45,11 @@ async function createOrder(
   }
 }
 
-export function useCreateOrder() {
+export const useCreateOrder = () => {
   const { items, clearBasket } = useBasketStore();
 
   return useMutation({
     mutationFn: (input: CreateOrderInput) => createOrder(input, items),
     onSuccess: () => clearBasket(),
   });
-}
+};

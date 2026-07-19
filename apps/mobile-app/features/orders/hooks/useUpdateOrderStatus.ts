@@ -10,7 +10,7 @@ async function updateOrderStatus(orderId: string, status: OrderStatus) {
   if (error) throw error;
 }
 
-export function useUpdateOrderStatus() {
+export const useUpdateOrderStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -26,4 +26,4 @@ export function useUpdateOrderStatus() {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
   });
-}
+};

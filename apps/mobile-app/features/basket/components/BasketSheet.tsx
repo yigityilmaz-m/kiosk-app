@@ -18,7 +18,7 @@ import { ContinueButton } from "@/components/ContinueButton";
 
 const SHEET_HEIGHT_RATIO = 0.72;
 
-export function BasketSheet() {
+export const BasketSheet = () => {
   const { height } = useWindowDimensions();
   const sheetHeight = height * SHEET_HEIGHT_RATIO;
   const { translateY, close } = useBasketSheet();
@@ -102,4 +102,4 @@ export function BasketSheet() {
       </Animated.View>
     </>
   );
-}
+};
