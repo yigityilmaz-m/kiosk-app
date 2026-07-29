@@ -46,3 +46,19 @@ export type OrderItemWithProduct = OrderItem & {
 export type OrderWithItems = Order & {
   order_items: OrderItemWithProduct[];
 };
+export type Resource = {
+  id: string;
+  name: string;
+  unit: "g" | "ml" | "unit";
+  current_stock: number;
+  low_stock_threshold: number;
+  created_at: string;
+};
+
+export type ProductIngredient = {
+  id: string;
+  product_id: string;
+  resource_id: string;
+  quantity_used: number;
+  quantity_used_large: number | null;
+};

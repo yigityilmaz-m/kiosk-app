@@ -8,6 +8,16 @@ async function updateOrderStatus(orderId: string, status: OrderStatus) {
     .update({ status })
     .eq("id", orderId);
   if (error) throw error;
+
+  if (status === "completed") {
+    const { error: deductError } = await supabase.rpc(
+      "deduct_resources_for_order",
+      {
+        order_id_input: orderId,
+      },
+    );
+    if (deductError) throw deductError;
+  }
 }
 
 export const useUpdateOrderStatus = () => {
@@ -22,8 +32,8 @@ export const useUpdateOrderStatus = () => {
       status: OrderStatus;
     }) => updateOrderStatus(orderId, status),
     onSuccess: () => {
-      // Invalidate all order filter variants so every tab re-fetches
       queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["resources"] });
     },
   });
 };
