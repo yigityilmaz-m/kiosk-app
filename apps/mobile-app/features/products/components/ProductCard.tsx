@@ -1,5 +1,5 @@
 import { View, Text, Pressable, Image } from "react-native";
-import type { Product } from "@/types/database";
+import type { Product } from "@shared/types/database";
 
 type Props = {
   product: Product;

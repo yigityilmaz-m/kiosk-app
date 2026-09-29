@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import type { OrderStatus } from "@/types/database";
+import type { OrderStatus } from "@shared/types/database";
 
 async function updateOrderStatus(orderId: string, status: OrderStatus) {
   const { error } = await supabase

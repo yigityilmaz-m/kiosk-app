@@ -1,4 +1,4 @@
-import { OrderStatus } from "@/types/database";
+import type { OrderStatus } from "@shared/types/database";
 
 export const STATUS_COLOR: Record<OrderStatus, string> = {
   pending: "bg-blue-100 text-blue-700 rounded-xl",

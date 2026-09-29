@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import type { Category } from "@/types/database";
+import type { Category } from "@shared/types/database";
 
 async function fetchCategories(): Promise<Category[]> {
   let query = supabase.from("categories").select("*").order("sort_order");

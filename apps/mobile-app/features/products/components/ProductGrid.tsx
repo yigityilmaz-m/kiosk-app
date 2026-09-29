@@ -8,7 +8,7 @@ import {
 import { MoveLeft } from "lucide-react-native";
 import { router } from "expo-router";
 import { ProductCard } from "@/features/products/components/ProductCard";
-import type { Category } from "@/types/database";
+import type { Category } from "@shared/types/database";
 import { useProducts } from "@/features/products/hooks/useProducts";
 
 type ProductGridProps = {

@@ -1,6 +1,6 @@
 import { View, Text, Image, Pressable, ScrollView } from "react-native";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/types/database";
+import type { Category } from "@shared/types/database";
 
 type MainCategoryGridProps = {
   categories: Category[];

@@ -1,4 +1,4 @@
-import { OrderItemWithProduct } from "@/types/database";
+import { OrderItemWithProduct } from "@shared/types/database";
 import { Image, Text, View } from "react-native";
 
 export const OrderDetailItem = ({ item }: { item: OrderItemWithProduct }) => {

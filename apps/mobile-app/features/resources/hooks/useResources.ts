@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { Resource } from "@/types/database";
+import { Resource } from "@shared/types/database";
 import { useQuery } from "@tanstack/react-query";
 
 export function useResources() {

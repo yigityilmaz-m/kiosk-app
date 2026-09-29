@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Pressable } from "react-native";
 import { SubCategoryCard } from "@/features/products/components/SubCategoryCard";
-import type { Category } from "@/types/database";
+import type { Category } from "@shared/types/database";
 
 type SubCategoryGridProps = {
   subCategories: Category[];

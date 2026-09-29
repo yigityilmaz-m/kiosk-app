@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import type { Product } from "@/types/database";
+import type { Product } from "@shared/types/database";
 
 export const useProduct = (id: string) => {
   return useQuery<Product>({

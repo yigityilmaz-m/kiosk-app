@@ -3,9 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@shared/*": ["../shared/*"]
+      // "*": ["./node_modules/*", "./node_modules/@types/*"]
     }
   },
   "include": [

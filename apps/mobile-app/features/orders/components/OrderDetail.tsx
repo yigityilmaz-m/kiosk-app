@@ -1,5 +1,5 @@
 //Order detail (right column)
-import { OrderStatus, OrderWithItems } from "@/types/database";
+import { OrderStatus, OrderWithItems } from "@shared/types/database";
 import { useUpdateOrderStatus } from "../hooks/useUpdateOrderStatus";
 import { ScrollView, Text, View } from "react-native";
 import { ContinueButton } from "@/components/ContinueButton";

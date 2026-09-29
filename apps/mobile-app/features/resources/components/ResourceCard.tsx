@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { Resource } from "@/types/database";
+import { Resource } from "@shared/types/database";
 import { PackagePlus, TriangleAlert } from "lucide-react-native";
 import { cn } from "@/lib/utils";
 

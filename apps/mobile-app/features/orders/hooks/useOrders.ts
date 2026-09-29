@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import type { OrderStatus, OrderWithItems } from "@/types/database";
+import type { OrderStatus, OrderWithItems } from "@shared/types/database";
 import { useEffect } from "react";
 
 export type OrderFilter = "all" | "active" | "completed" | "cancelled";

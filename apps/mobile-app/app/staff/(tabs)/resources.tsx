@@ -3,7 +3,7 @@ import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useResources } from "@/features/resources/hooks/useResources";
 import { AddStockModal } from "@/features/resources/components/AddStockModal";
-import type { Resource } from "@/types/database";
+import type { Resource } from "@shared/types/database";
 import ResourceCard from "@/features/resources/components/ResourceCard";
 
 export default function ResourcesScreen() {

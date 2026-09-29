@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Product } from "@/types/database";
+import type { Product } from "@shared/types/database";
 
 export type BasketItem = {
   product: Product;

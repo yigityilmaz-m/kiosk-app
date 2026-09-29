@@ -7,7 +7,7 @@ import {
 import { BasketSheet } from "@/features/basket/components/BasketSheet";
 import { BottomBar } from "@/components/BottomBar";
 import { useCategories } from "@/features/products/hooks/useCategories";
-import type { Category } from "@/types/database";
+import type { Category } from "@shared/types/database";
 import { useHiddenStaffTrigger } from "@/features/auth/hooks/useHiddeenStaffTrigger";
 import { AppHeader } from "@/components/AppHeader";
 import { MainCategoryGrid } from "@/features/products/components/MainCategoryGrid";

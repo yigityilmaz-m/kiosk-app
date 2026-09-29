@@ -1,4 +1,4 @@
-import { Category } from "@/types/database";
+import { Category } from "@shared/types/database";
 import React from "react";
 import { Image, Text, View } from "react-native";
 

@@ -2,7 +2,7 @@
 
 import { STATUS_COLOR } from "@/lib/constants";
 import { cn, formatOrderDate } from "@/lib/utils";
-import { OrderWithItems } from "@/types/database";
+import { OrderWithItems } from "@shared/types/database";
 import { Pressable, Text } from "react-native";
 
 export const OrderListItem = ({

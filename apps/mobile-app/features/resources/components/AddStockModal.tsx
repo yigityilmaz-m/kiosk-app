@@ -11,7 +11,7 @@ import { X } from "lucide-react-native";
 import { useAdjustResourceStock } from "@/features/resources/hooks/useAdjustResourceStock";
 import { useSetResourceStock } from "@/features/resources/hooks/useSetResourceStock";
 import { cn } from "@/lib/utils";
-import type { Resource } from "@/types/database";
+import type { Resource } from "@shared/types/database";
 
 const QUICK_AMOUNTS = [500, 1000, 5000];
 type Mode = "add" | "set";

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import type { Product } from "@/types/database";
+import type { Product } from "@shared/types/database";
 
 async function fetchProducts(categoryId?: string): Promise<Product[]> {
   let query = supabase
