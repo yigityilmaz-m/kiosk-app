@@ -10,14 +10,42 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  --color-brand: #ff8c00;
+  --color-brand-light: #f59e0b;
+  --color-brand-subtle: #fef3c7;
+  --color-brand-continue: #b92020;
+  --color-brand-text: #374151;
+  --color-brand-muted: #9ca3af;
+  --color-brand-border: #e5e7eb;
+  --color-brand-bg: #f9fafb;
+  
+  --color-ink: #1c1410;
+  --color-ink-light: #2c1e14;
+
+  --shadow-card: 0 4px 4px rgba(28, 20, 16, 0.2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility textHeader {
+  @apply text-2xl font-black tracking-widest uppercase;
 }
+
+@utility textTitle {
+  @apply text-lg font-bold tracking-wide uppercase;
+}
+
+@utility textLabel {
+  @apply text-xs font-semibold uppercase tracking-widest;
+}
+
+@utility textBody {
+  @apply text-sm font-semibold leading-relaxed;
+}
+
+@utility textDetail {
+  @apply text-xs font-semibold leading-relaxed;
+}
+
 
 body {
   background: var(--background);
