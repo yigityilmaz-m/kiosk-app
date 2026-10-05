@@ -6,7 +6,7 @@ type Props = {
   onSelect: (cat: Category) => void;
 };
 
-export function SubCategoryGrid({ subCategories, onSelect }: Props) {
+const SubCategoryGrid = ({ subCategories, onSelect }: Props) => {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       {subCategories.length === 0 ? (
@@ -30,4 +30,5 @@ export function SubCategoryGrid({ subCategories, onSelect }: Props) {
       )}
     </div>
   );
-}
+};
+export default SubCategoryGrid;

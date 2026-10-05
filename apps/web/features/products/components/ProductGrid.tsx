@@ -4,19 +4,22 @@ import { Loader2, MoveLeft } from "lucide-react";
 import { ProductCard } from "./ProductCard";
 import { useProducts } from "../hooks/useProducts";
 import type { Category } from "@shared/types/database";
+import { useRouter } from "next/navigation";
 
 type Props = {
   selectedSub: Category;
   onBack: () => void;
 };
 
-export function ProductGrid({ selectedSub, onBack }: Props) {
+const ProductGrid = ({ selectedSub, onBack }: Props) => {
   const {
     data: products,
     isLoading,
     isError,
     refetch,
   } = useProducts(selectedSub.id);
+
+  const router = useRouter();
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -65,7 +68,10 @@ export function ProductGrid({ selectedSub, onBack }: Props) {
               {products?.map((item) => (
                 <li key={item.id}>
                   {/* TODO: open product detail modal*/}
-                  <ProductCard product={item} onPress={() => {}} />
+                  <ProductCard
+                    product={item}
+                    onPress={() => router.push(`/product/${item.id}`)}
+                  />
                 </li>
               ))}
             </ul>
@@ -74,4 +80,6 @@ export function ProductGrid({ selectedSub, onBack }: Props) {
       )}
     </div>
   );
-}
+};
+
+export default ProductGrid;

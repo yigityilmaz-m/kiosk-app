@@ -1,18 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCategories } from "@/features/products/hooks/useCategories";
 import { AppHeader } from "@/components/AppHeader";
 import { MainCategoryGrid } from "@/features/products/components/MainCategoryGrid";
-import { SubCategoryGrid } from "@/features/products/components/SubCategoryGrid";
-import { ProductGrid } from "@/features/products/components/ProductGrid";
 import type { Category } from "@shared/types/database";
+import ProductGrid from "@/features/products/components/ProductGrid";
+import SubCategoryGrid from "@/features/products/components/SubCategoryGrid";
 
-export default function CustomerPage() {
+const MenuContent = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const mainSlug = searchParams.get("main");
+  const subSlug = searchParams.get("sub");
+
   const { data: categories } = useCategories();
-
-  const [selectedMainId, setSelectedMainId] = useState<string | null>(null);
-  const [selectedSubId, setselectedSubId] = useState<string | null>(null);
 
   const mainCategories = useMemo(
     () => categories?.filter((c) => c.parent_id === null) ?? [],
@@ -20,7 +23,7 @@ export default function CustomerPage() {
   );
 
   const selectedMain =
-    mainCategories.find((c) => c.id === selectedMainId) ??
+    mainCategories.find((c) => c.slug === mainSlug) ??
     mainCategories[0] ??
     null;
 
@@ -29,15 +32,26 @@ export default function CustomerPage() {
     [categories, selectedMain],
   );
 
-  const selectedSub =
-    subCategories.find((c) => c.id === selectedSubId) ??
-    subCategories[0] ??
-    null;
+  // No fallback to the first sub: no valid ?sub= means "show the sub grid"
+  const selectedSub = subCategories.find((c) => c.slug === subSlug) ?? null;
 
-  function handleSelectMain(cat: Category) {
-    setSelectedMainId(cat.id);
-    setselectedSubId(null);
-  }
+  const handleSelectMain = (cat: Category) => {
+    // replace: switching sidebar tabs shouldn't pile up history entries
+    router.replace(`/?main=${cat.slug}`, { scroll: false });
+  };
+
+  const handleSelectSub = (cat: Category) => {
+    if (!selectedMain) return;
+    // push: browser back from a product list returns to the sub grid
+    router.push(`/?main=${selectedMain.slug}&sub=${cat.slug}`, {
+      scroll: false,
+    });
+  };
+
+  const handleBackToSubs = () => {
+    if (!selectedMain) return;
+    router.push(`/?main=${selectedMain.slug}`, { scroll: false });
+  };
 
   return (
     <div className="flex h-dvh flex-col bg-[#f8fafc]">
@@ -51,20 +65,30 @@ export default function CustomerPage() {
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          {selectedMain && !selectedSubId ? (
+          {selectedSub ? (
+            <ProductGrid
+              key={selectedSub.id}
+              selectedSub={selectedSub}
+              onBack={handleBackToSubs}
+            />
+          ) : selectedMain ? (
             <SubCategoryGrid
               subCategories={subCategories}
-              onSelect={(cat) => setselectedSubId(cat.id)}
-            />
-          ) : selectedSubId ? (
-            <ProductGrid
-              key={selectedSubId}
-              selectedSub={selectedSub}
-              onBack={() => setselectedSubId(null)}
+              onSelect={handleSelectSub}
             />
           ) : null}
         </div>
       </div>
     </div>
   );
-}
+};
+
+const CustomerPage = () => {
+  return (
+    <Suspense fallback={null}>
+      <MenuContent />
+    </Suspense>
+  );
+};
+
+export default CustomerPage;
