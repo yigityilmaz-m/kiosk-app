@@ -8,6 +8,7 @@ import { useProduct } from "@/features/products/hooks/useProduct";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/features/products/hooks/useCategories";
 import Link from "next/link";
+import { useBasketStore } from "@/features/basket/store";
 
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +19,9 @@ const ProductPage = () => {
   );
 
   const { data: categories } = useCategories();
+
+  // inside ProductPage, next to the other hooks
+  const addItem = useBasketStore((s) => s.addItem);
 
   const menuHref = useMemo(() => {
     const sub = categories?.find((c) => c.id === product?.category_id);
@@ -42,7 +46,7 @@ const ProductPage = () => {
 
   const handleAdd = () => {
     if (!canAdd || !product) return;
-    // TODO (Phase 3): addItem(product, hasVariants ? selectedSize : null)
+    addItem(product, hasVariants ? selectedSize : null);
     goBack();
   };
 

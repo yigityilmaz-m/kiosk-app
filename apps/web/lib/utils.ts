@@ -1,8 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
-
+export { cn } from "cn";
 export const formatOrderDate = (
   isoString: string,
 ): { day: string; time: string } => {

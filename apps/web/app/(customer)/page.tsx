@@ -8,6 +8,7 @@ import { MainCategoryGrid } from "@/features/products/components/MainCategoryGri
 import type { Category } from "@shared/types/database";
 import ProductGrid from "@/features/products/components/ProductGrid";
 import SubCategoryGrid from "@/features/products/components/SubCategoryGrid";
+import { BottomBar } from "@/components/BottomBar";
 
 const MenuContent = () => {
   const router = useRouter();
@@ -79,6 +80,7 @@ const MenuContent = () => {
           ) : null}
         </div>
       </div>
+      <BottomBar />
     </div>
   );
 };
